@@ -1,11 +1,15 @@
 <header>
     <div class="main-header">
         <div class="main-header-title">
-            Josh Beard
+            {{ site.title }}
         </div>
 
         <div class="main-header-description">
-            Software Developer
+            {% if page.pageTitle And page.pageTitle != "" And page.pageTitle != nil %}
+                {{ page.pageTitle }}
+            {% else %}
+                Software Developer
+            {% endif %}
         </div>
     </div>
 </header>

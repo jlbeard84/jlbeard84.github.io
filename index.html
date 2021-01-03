@@ -1,3 +1,40 @@
 ---
-layout: default
+layout: home
+pageTitle: Software Developer
 ---
+
+<div class="home-outer">
+
+  <div class="home-container">
+    <div class="post-container">
+      <!--
+      {%- for post in site.posts limit: 2 -%}
+          <a class="post-title" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+          <span class="post-meta">
+            {{ post.date | date: "%b %-d, %Y" }}
+          </span>
+          <span class="post-excerpt">
+            {{ post.excerpt }}
+          </span>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            >> Read full post
+          </a>
+      {%- endfor -%}
+
+      <a class="home-link" href="">
+        View All Posts
+      </a>
+      -->
+    </div>
+  </div>
+
+  <div class="about-container">
+    <span class="about-title">
+      About Me
+    </span>
+      {%- include about-me.html -%}
+  </div>
+
+</div>

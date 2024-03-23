@@ -7,6 +7,14 @@ const a=`
                 JB
             </a>
 
+            <a href="resume.html" aria-label="Resume">
+                <i class='far fa-file-alt'></i>
+            </a>
+
+            <a href="projects.html" aria-label="Projects">
+                <i class='far fa-lightbulb'></i>
+            </a>
+
             <a href="demo.html" aria-label="Demos">
                 <i class="far fa-file-code"></i>
             </a>
@@ -22,4 +30,4 @@ const a=`
         </div>
     </nav>
 `;class e extends HTMLElement{connectedCallback(){this.render()}render(){this.innerHTML=a}}customElements.define("header-component",e);
-//# sourceMappingURL=demo.b91f3ddc.js.map
+//# sourceMappingURL=demo.35b308e5.js.map

@@ -1,0 +1,570 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  background: #2a2520;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- room / desk surface ---- */
+.room {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 30%, #3d3530, #1e1a17);
+  padding: 40px 20px;
+}
+
+/* ---- Apple II monitor ---- */
+.monitor {
+  position: relative;
+  width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- chassis body ---- */
+.chassis {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg, #ece3d4 0%, #e5dcc9 40%, #ddd4be 100%);
+  border-radius: 32px 32px 16px 16px;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,240,0.4);
+  padding: 0;
+}
+
+/* Stippled texture over full chassis */
+.chassis::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 32px 32px 16px 16px;
+  pointer-events: none;
+  z-index: 3;
+  /* Fine stippled dot pattern — like molded plastic grain */
+  background-image: radial-gradient(
+    circle at 20% 30%,
+    rgba(0,0,0,0.035) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 8px 8px;
+  mix-blend-mode: multiply;
+}
+
+/* ---- ventilation groove at top of chassis ---- */
+.vent-top {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 0 4px;
+  position: relative;
+  z-index: 1;
+}
+.vent-top .slot {
+  width: 36px; height: 6px;
+  background: rgba(0,0,0,0.07);
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* ---- screen bezel area (outer) ---- */
+.bezel-outer {
+  margin: 14px 28px 0;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 50%, #181818 100%);
+  border-radius: 22px;
+  padding: 4px;
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,0.6),
+    inset 0 -1px 2px rgba(255,255,255,0.02),
+    0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+/* bezel inner ring — the dark recess around the tube */
+.bezel-inner {
+  background: linear-gradient(180deg, #0e0e0e 0%, #080808 50%, #0a0a0a 100%);
+  border-radius: 20px;
+  padding: 14px;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+/* subtle highlight on bezel inner edge — simulates tube frame rim */
+.bezel-inner::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.02);
+  pointer-events: none;
+}
+
+/* ---- CRT tube (the glass face) ---- */
+.crt-tube {
+  position: relative;
+  background: #050300;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,0.7),
+    inset 0 0 100px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 0 0 3px rgba(40,35,30,0.12);
+}
+
+/* The content surface — pulled into a slight convex curve */
+.screen-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10%;
+  /* Perspective + scale to simulate spherical tube face */
+  transform: perspective(600px) rotateX(0.8deg) rotateY(-0.3deg) scale(0.95);
+  transform-origin: center center;
+}
+
+/* ---- tube curvature overlay (vignette + bulge shading) ---- */
+.tube-shade {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 5;
+  background:
+    /* Corner darkening — aggressive, simulates tube depth */
+    radial-gradient(
+      ellipse 160% 130% at 50% 50%,
+      transparent 45%,
+      rgba(0,0,0,0.45) 75%,
+      rgba(0,0,0,0.75) 95%,
+      rgba(0,0,0,0.85) 100%
+    ),
+    /* Center sheen — convex glass highlight */
+    radial-gradient(
+      ellipse 50% 40% at 50% 38%,
+      rgba(120,255,100,0.03) 0%,
+      transparent 55%
+    ),
+    /* Left/right edge shadow for depth */
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,0.25) 0%,
+      transparent 15%,
+      transparent 85%,
+      rgba(0,0,0,0.25) 100%
+    );
+}
+
+/* ---- P1 green phosphor content ---- */
+.screen-surface {
+  color: #6f6;
+  font-family: 'SF Mono', ui-monospace, 'JetBrains Mono', 'IBM Plex Mono', Menlo, monospace;
+  text-shadow:
+    0 0 4px rgba(100, 255, 80, 0.25),
+    0 0 12px rgba(100, 255, 80, 0.1),
+    0 0 30px rgba(80, 220, 60, 0.06);
+}
+
+/* ---- content blocks ---- */
+.content-block {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.content-block.active {
+  display: flex;
+  opacity: 1;
+}
+
+.content-block .name {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #7f7;
+  text-shadow:
+    0 0 8px rgba(100, 255, 80, 0.35),
+    0 0 24px rgba(100, 255, 80, 0.12),
+    0 0 50px rgba(80, 220, 60, 0.06);
+  margin-bottom: 0.1em;
+}
+
+.content-block .title-line {
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(120, 255, 100, 0.5);
+  margin-bottom: 1em;
+  text-shadow: 0 0 6px rgba(100, 255, 80, 0.05);
+}
+
+.content-block .body {
+  font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+  line-height: 1.7;
+  color: rgba(140, 255, 120, 0.7);
+  max-width: 40ch;
+  text-shadow: 0 0 3px rgba(100, 255, 80, 0.04);
+}
+
+.content-block .body strong {
+  color: rgba(160, 255, 140, 0.9);
+  font-weight: 600;
+}
+
+.content-block .domain-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5em 1em;
+  margin-top: 0.6em;
+}
+.content-block .domain-list li {
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  letter-spacing: 0.08em;
+  color: rgba(140, 255, 120, 0.5);
+  padding: 0.25em 0.7em;
+  border: 1px solid rgba(100, 255, 80, 0.15);
+  border-radius: 3px;
+}
+
+/* ---- blinking cursor ---- */
+.cursor {
+  display: inline-block;
+  width: 0.52em;
+  height: 1em;
+  background: rgba(100, 255, 80, 0.45);
+  margin-left: 0.1em;
+  vertical-align: text-bottom;
+  animation: blink 0.7s step-end infinite;
+  box-shadow: 0 0 6px rgba(100, 255, 80, 0.15);
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ---- rolling scanlines overlay ---- */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 6;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(100, 255, 80, 0.03) 0px,
+    rgba(100, 255, 80, 0.03) 2px,
+    rgba(0,0,0,0.22) 2px,
+    rgba(0,0,0,0.22) 4px,
+    transparent 4px,
+    transparent 5px,
+    rgba(0,0,0,0.18) 5px,
+    rgba(0,0,0,0.18) 6px
+  );
+  animation: scan-roll 6s linear infinite;
+}
+@keyframes scan-roll {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 12px; }
+}
+
+/* ---- glass reflection overlay ---- */
+.glass-reflect {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 7;
+  background: linear-gradient(
+    140deg,
+    rgba(180, 255, 160, 0.025) 0%,
+    rgba(180, 255, 160, 0.05) 12%,
+    transparent 38%,
+    rgba(180, 240, 160, 0.015) 60%,
+    transparent 100%
+  );
+}
+
+/* ---- static burst overlay ---- */
+.static-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 8;
+  opacity: 0;
+}
+.static-overlay.active {
+  opacity: 1;
+}
+#static-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  display: block;
+}
+
+/* ---- below-screen panel: badge & vents ---- */
+.bottom-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 36px 12px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Lucky21Labs logo in rainbow colors */
+.l21-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+.l21-badge .logo-wrap {
+  width: 80px;
+  height: auto;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,0.1));
+}
+.l21-badge .logo-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.l21-badge .badge-text {
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.22em;
+  color: rgba(0,0,0,0.2);
+}
+
+/* ---- knobs (brightness / contrast) ---- */
+.knob-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 4px;
+}
+.knob-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.knob-group .knob-label {
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 0.4rem;
+  letter-spacing: 0.12em;
+  color: rgba(0,0,0,0.15);
+  text-transform: uppercase;
+}
+.knob-dial {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #555, #333);
+  box-shadow:
+    inset 0 -2px 4px rgba(0,0,0,0.4),
+    inset 0 2px 3px rgba(255,255,255,0.15),
+    0 2px 4px rgba(0,0,0,0.2);
+  position: relative;
+  cursor: pointer;
+}
+.knob-dial::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 50%;
+  width: 2px; height: 7px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 1px;
+  transform: translateX(-50%) rotate(-30deg);
+}
+.knob-dial:nth-child(2)::after {
+  transform: translateX(-50%) rotate(20deg);
+}
+
+/* ---- bottom vent grille ---- */
+.vent-bottom {
+  display: flex;
+  gap: 6px;
+  padding-top: 6px;
+}
+.vent-bottom .bar {
+  width: 18px; height: 5px;
+  background: rgba(0,0,0,0.07);
+  border-radius: 2px;
+}
+
+/* ---- power LED ---- */
+.power-led {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-bottom: 10px;
+}
+.power-led .led-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #5a5;
+  box-shadow: 0 0 6px rgba(80, 200, 80, 0.3);
+  animation: led-pulse 3s ease-in-out infinite;
+}
+@keyframes led-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(80, 200, 80, 0.2); }
+  50%      { box-shadow: 0 0 12px rgba(80, 200, 80, 0.5); }
+}
+.power-led .led-label {
+  font-size: 0.45rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.12);
+}
+
+/* ---- stand ---- */
+.stand {
+  width: 52%;
+  height: 30px;
+  background: linear-gradient(180deg, #d5cbb5 0%, #c8bea8 100%);
+  border-radius: 0 0 14px 14px;
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,240,0.3);
+  position: relative;
+  margin-top: -1px;
+}
+/* stand base ledge */
+.stand::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: -6px; right: -6px;
+  height: 10px;
+  background: #b8ae98;
+  border-radius: 0 0 10px 10px;
+  box-shadow:
+    0 2px 0 rgba(0,0,0,0.08),
+    inset 0 2px 4px rgba(0,0,0,0.1);
+}
+/* shadow under front lip */
+.stand::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 4px; right: 4px;
+  height: 6px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 50%;
+  filter: blur(3px);
+}
+
+/* ---- external links below monitor ---- */
+.ext-links {
+  margin-top: 40px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+.ext-links::before,
+.ext-links::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: rgba(200, 220, 180, 0.08);
+}
+.ext-links a {
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: rgba(180, 230, 160, 0.55);
+  text-decoration: none;
+  transition: color 0.3s, text-shadow 0.3s;
+  position: relative;
+}
+.ext-links a::before {
+  content: '▶ ';
+  font-size: 0.55rem;
+  color: rgba(100, 255, 80, 0.25);
+  margin-right: 2px;
+}
+.ext-links a:hover {
+  color: rgba(140, 255, 120, 0.85);
+  text-shadow: 0 0 12px rgba(100, 255, 80, 0.2);
+}
+
+/* ---- turn-on warmup ---- */
+@keyframes crt-warmup {
+  0%   { filter: brightness(3) saturate(0); opacity: 0.15; }
+  12%  { filter: brightness(2.2) saturate(0.15); opacity: 0.35; }
+  35%  { filter: brightness(1.5) saturate(0.4); opacity: 0.65; }
+  100% { filter: brightness(1) saturate(1); opacity: 1; }
+}
+.screen-surface {
+  animation: crt-warmup 2.2s ease-out forwards;
+}
+
+/* ---- CRT transition wipe (between content blocks) ---- */
+@keyframes crt-wipe-in {
+  0%   { clip-path: inset(0 100% 0 0); opacity: 0; }
+  35%  { clip-path: inset(0 0% 0 0); opacity: 0.5; }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+.content-block.transition-in {
+  animation: crt-wipe-in 0.7s ease-out forwards;
+}
+
+/* ---- phosphor fade out ---- */
+@keyframes phosphor-fade {
+  0%   { opacity: 1; filter: brightness(1); }
+  50%  { opacity: 0.5; filter: brightness(1.6) saturate(1.3); }
+  100% { opacity: 0; filter: brightness(2.8) saturate(0.4); }
+}
+.content-block.transition-out {
+  animation: phosphor-fade 0.45s ease-in forwards;
+}
+
+/* ---- responsiveness ---- */
+@media (max-width: 780px) {
+  .monitor { width: 92vw; }
+  .chassis { border-radius: 24px 24px 12px 12px; }
+  .bezel-outer { border-radius: 16px; padding: 3px; }
+  .bezel-inner { border-radius: 14px; padding: 10px; }
+  .crt-tube { border-radius: 10px; }
+  .crt-tube, .screen-surface, .tube-shade, .scanlines, .glass-reflect,
+  #static-canvas, .static-overlay { border-radius: 10px; }
+  .bottom-panel { flex-wrap: wrap; gap: 8px; padding: 12px 18px 8px; }
+  .vent-top .slot { width: 24px; }
+  .stand { width: 65%; }
+  .ext-links { gap: 24px; }
+  .ext-links::before, .ext-links::after { width: 30px; }
+  .l21-badge .logo-wrap { width: 60px; }
+}
+
+@media (max-width: 480px) {
+  .monitor { width: 96vw; }
+  .bezel-outer { border-radius: 12px; padding: 2px; }
+  .bezel-inner { border-radius: 10px; padding: 8px; }
+  .crt-tube { border-radius: 8px; }
+  .crt-tube, .screen-surface, .tube-shade, .scanlines, .glass-reflect,
+  #static-canvas, .static-overlay { border-radius: 8px; }
+  .bottom-panel { padding: 8px 12px 8px; }
+  .screen-surface { padding: 6%; }
+  .ext-links { flex-direction: column; gap: 14px; }
+  .ext-links::before, .ext-links::after { width: 50px; }
+  .l21-badge .logo-wrap { width: 50px; }
+}
